@@ -150,27 +150,27 @@ task-manager/
 ### Authentication
 - Login and Registration interfaces showing form validation and error states
 <div style="display: flex; gap: 20px; margin-bottom: 20px;">
-    <img src="/screenshots/login-interface.png" alt="Login Interface" width="48%"/>
-    <img src="/screenshots/register-interface.png" alt="Register Interface" width="48%"/>
+    <img src="/client/public/screenshots/screenshots/login-interface.png" alt="Login Interface" width="48%"/>
+    <img src="/client/public/screenshots/screenshots/register-interface.png" alt="Register Interface" width="48%"/>
 </div>
 
 ### Dashboard
 - Main task overview with filtering and sorting capabilities
 ![Dashboard](./client/public/screenshots/dashboard.png)
 - Mobile responsive view
-![Mobile Dashboard](./client/public/screenshots/screenshots/dashboard-mobile.png)
+![Mobile Dashboard](./client/public/screenshots/dashboard-mobile.png)
 
 ### Task Management
 - Task creation and editing interfaces
-![Task Creation](./client/public/screenshots/screenshots/task-create.png)
+![Task Creation](./client/public/screenshots/task-create.png)
 - Task details view
-![Task Details](./client/public/screenshots/screenshots/task-details.png)
+![Task Details](./client/public/screenshots/task-details.png)
 
 ### Notifications
 - Notification center showing different urgency levels
-![Notifications](./client/public/screenshots/screenshots/notifications.png)
+![Notifications](./client/public/screenshots/notifications.png)
 - Task deadline indicators
-![Task Deadlines](./client/public/screenshots/screenshots/deadlines.png)
+![Task Deadlines](./client/public/screenshots/deadlines.png)
 
 <!-- ### Responsive Design
 - Mobile navigation and layout adaptations
