@@ -156,10 +156,12 @@ task-manager/
 
 ### Dashboard
 - Main task overview with filtering and sorting capabilities
-![Dashboard](./client/public/screenshots/dashboard.png)
-
-- Mobile responsive view
-![Mobile Dashboard](./client/public/screenshots/dashboard-mobile.png)
+<div align="center">
+  <img src="client/public/screenshots/dashboard.png" alt="Dashboard" width="100%"/>
+  
+  <h4>Mobile responsive view</h4>
+  <img src="client/public/screenshots/dashboard-mobile.png" alt="Mobile Dashboard" width="50%"/>
+</div>
 
 ### Task Management
 - Task creation and editing interfaces
