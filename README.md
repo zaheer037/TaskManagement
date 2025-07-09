@@ -156,21 +156,21 @@ task-manager/
 
 ### Dashboard
 - Main task overview with filtering and sorting capabilities
-![Dashboard](/screenshots/dashboard.png)
+![Dashboard](./client/public/screenshots/dashboard.png)
 - Mobile responsive view
-![Mobile Dashboard](/screenshots/dashboard-mobile.png)
+![Mobile Dashboard](./client/public/screenshots/screenshots/dashboard-mobile.png)
 
 ### Task Management
 - Task creation and editing interfaces
-![Task Creation](/screenshots/task-create.png)
+![Task Creation](./client/public/screenshots/screenshots/task-create.png)
 - Task details view
-![Task Details](/screenshots/task-details.png)
+![Task Details](./client/public/screenshots/screenshots/task-details.png)
 
 ### Notifications
 - Notification center showing different urgency levels
-![Notifications](/screenshots/notifications.png)
+![Notifications](./client/public/screenshots/screenshots/notifications.png)
 - Task deadline indicators
-![Task Deadlines](/screenshots/deadlines.png)
+![Task Deadlines](./client/public/screenshots/screenshots/deadlines.png)
 
 <!-- ### Responsive Design
 - Mobile navigation and layout adaptations
