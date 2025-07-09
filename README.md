@@ -157,6 +157,7 @@ task-manager/
 ### Dashboard
 - Main task overview with filtering and sorting capabilities
 ![Dashboard](./client/public/screenshots/dashboard.png)
+
 - Mobile responsive view
 ![Mobile Dashboard](./client/public/screenshots/dashboard-mobile.png)
 
