@@ -12,10 +12,14 @@ exports.createTask = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
   try {
     const { status, category, project, sortBy } = req.query;
-    const isAdmin = req.user.role === 'admin';
-
-    // Base query depending on user role
-    let query = isAdmin ? {} : { createdBy: req.user._id };
+    
+    // Base query for user's own tasks and assigned tasks
+    let query = {
+      $or: [
+        { createdBy: req.user._id },
+        { assignedTo: req.user._id }
+      ]
+    };
 
     // Apply filters
     if (status && status !== 'all') query.status = status;
@@ -27,14 +31,15 @@ exports.getAllTasks = async (req, res) => {
     if (sortBy === 'deadline') {
       sortOption.deadline = 1;
     } else {
-      sortOption.createdAt = -1; // Default sort by creation date
+      sortOption.createdAt = -1;
     }
 
     const tasks = await Task.find(query)
       .sort(sortOption)
+      .populate('createdBy', 'name email')
       .populate('assignedTo', 'name email');
 
-    res.json({ tasks });
+    res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -91,24 +96,26 @@ exports.getUpcomingTasks = async (req, res) => {
     const in48Hours = new Date(now.getTime() + 48 * 60 * 60 * 1000);
     
     const tasks = await Task.find({
-      $or: [
-        { createdBy: req.user._id },
-        { assignedTo: req.user._id }
-      ],
-      deadline: { $exists: true }, // Only tasks with deadline set
-      status: { $ne: 'completed' },
-      $or: [
-        { deadline: { $lte: in48Hours } }, // Due within 48 hours
-        { deadline: { $lt: now } } // Overdue tasks
+      $and: [
+        {
+          $or: [
+            { createdBy: req.user._id },
+            { assignedTo: req.user._id }
+          ]
+        },
+        {
+          deadline: { $exists: true }, // Only tasks with deadline set
+          status: { $ne: 'completed' },
+          deadline: { 
+            $lte: in48Hours, // Due within 48 hours or overdue
+            $exists: true 
+          }
+        }
       ]
     })
     .sort({ deadline: 1 }) // Sort by nearest deadline first
     .populate('assignedTo', 'name email')
     .populate('createdBy', 'name email');
-
-    if (!tasks) {
-      return res.status(404).json({ message: 'No tasks found' });
-    }
 
     // Filter out tasks with invalid deadlines and format them
     const validTasks = tasks.filter(task => task.deadline && !isNaN(new Date(task.deadline).getTime()));
@@ -120,6 +127,87 @@ exports.getUpcomingTasks = async (req, res) => {
       message: 'Error fetching upcoming tasks',
       error: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
+  }
+};
+
+// Admin-only: Get all tasks in the system
+exports.getAllTasksAdmin = async (req, res) => {
+  try {
+    const { status, category, project, sortBy } = req.query;
+    
+    let query = {};
+
+    // Apply filters
+    if (status && status !== 'all') query.status = status;
+    if (category) query.category = { $regex: category, $options: 'i' };
+    if (project) query.project = { $regex: project, $options: 'i' };
+
+    // Set up sorting
+    let sortOption = {};
+    if (sortBy === 'deadline') {
+      sortOption.deadline = 1;
+    } else {
+      sortOption.createdAt = -1;
+    }
+
+    const tasks = await Task.find(query)
+      .sort(sortOption)
+      .populate('createdBy', 'name email')
+      .populate('assignedTo', 'name email');
+
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getProjectStats = async (req, res) => {
+  try {
+    // Get all tasks
+    const tasks = await Task.find({})
+      .populate('assignedTo', 'name email')
+      .populate('createdBy', 'name email');
+
+    // Group tasks by project
+    const projectGroups = tasks.reduce((groups, task) => {
+      const project = task.project || 'Uncategorized';
+      if (!groups[project]) {
+        groups[project] = {
+          project,
+          tasks: [],
+          totalTasks: 0,
+          completedTasks: 0,
+          pendingTasks: 0,
+          inProgressTasks: 0
+        };
+      }
+      
+      groups[project].tasks.push(task);
+      groups[project].totalTasks++;
+      
+      switch (task.status) {
+        case 'completed':
+          groups[project].completedTasks++;
+          break;
+        case 'in-progress':
+          groups[project].inProgressTasks++;
+          break;
+        default:
+          groups[project].pendingTasks++;
+      }
+      
+      return groups;
+    }, {});
+
+    // Convert to array and sort by project name
+    const projects = Object.values(projectGroups).sort((a, b) => 
+      a.project.localeCompare(b.project)
+    );
+
+    res.json({ projects });
+  } catch (err) {
+    console.error('Error in getProjectStats:', err);
+    res.status(500).json({ message: err.message });
   }
 };
 

@@ -37,19 +37,23 @@ export default function DashboardPage() {
   })
 
   useEffect(() => {
-    fetchTasks()
-  }, [filters])
+    if (user) { // Only fetch if user is logged in
+      fetchTasks()
+    }
+  }, [filters, user])
 
   const fetchTasks = async () => {
     try {
       const params = new URLSearchParams()
-      if (filters.status !== "all") params.append("status", filters.status) // Updated condition to exclude 'all'
+      if (filters.status !== "all") params.append("status", filters.status)
       if (filters.category) params.append("category", filters.category)
       if (filters.project) params.append("project", filters.project)
       params.append("sortBy", filters.sortBy)
 
-      const response = await api.get(`/tasks?${params.toString()}`)
-      const tasksData = response.data.tasks ?? response.data // handle both array and object
+      // Use different endpoints based on user role
+      const endpoint = user?.role === "admin" ? "/tasks/all/tasks" : "/tasks/my"
+      const response = await api.get(`${endpoint}?${params.toString()}`)
+      const tasksData = Array.isArray(response.data) ? response.data : response.data.tasks // handle both array and object responses
       console.log("Fetched tasks:", tasksData)
       
       setTasks(tasksData)
