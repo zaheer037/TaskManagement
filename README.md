@@ -150,8 +150,8 @@ task-manager/
 ### Authentication
 - Login and Registration interfaces showing form validation and error states
 <div style="display: flex; gap: 20px; margin-bottom: 20px;">
-    <img src="/client/public/screenshots/screenshots/login-interface.png" alt="Login Interface" width="48%"/>
-    <img src="/client/public/screenshots/screenshots/register-interface.png" alt="Register Interface" width="48%"/>
+    <img src="/client/public/screenshots/login-interface.png" alt="Login Interface" width="48%"/>
+    <img src="/client/public/screenshots/register-interface.png" alt="Register Interface" width="48%"/>
 </div>
 
 ### Dashboard
