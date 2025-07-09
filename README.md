@@ -94,7 +94,7 @@ task-manager/
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/zaheer037/TaskManagement.git
    ```
 
 2. Setup Backend:
