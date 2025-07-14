@@ -185,7 +185,7 @@ task-manager/
 
 ## Contact
 
-[Your Name]
+Maseed Zaheer
 - Email: [jaheermaseed@gmail.com]
 - LinkedIn: [https://www.linkedin.com/in/zaheer-maseed/]
 - GitHub: [https://github.com/zaheer037]
